@@ -2,7 +2,7 @@ Feature: Version
 
   Background:
     Given url baseUrl
-    Given path '/location'
+    Given path '/version'
 
   Scenario: Add basic location to trip
     When method GET
