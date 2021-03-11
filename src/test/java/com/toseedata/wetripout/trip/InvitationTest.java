@@ -8,5 +8,5 @@ _validateName == false &&
         _numberInputController.text != "" &&
         _nameInputController.text != "" &&
  */
-public class InivitationTest {
+public class InvitationTest {
 }
