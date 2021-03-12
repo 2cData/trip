@@ -17,6 +17,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <cloud.project>trip-307115</cloud.project>
         <spring-cloud-gcp.version>2.0.0</spring-cloud-gcp.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <cucumber.version>6.10.0</cucumber.version>
@@ -24,6 +25,7 @@
         <wiremock.version>2.27.2</wiremock.version>
         <junit5.version>5.7.1</junit5.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+
     </properties>
     <dependencies>
 
@@ -166,6 +168,20 @@
                     </includes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>1.8.0</version>
+                <configuration>
+                    <from>
+                        <image>gcr.io/distroless/java:11</image>
+                    </from>
+                    <to>
+                        <image>gcr.io/${cloud.project}/${project.artifactId}</image>
+                    </to>
+                </configuration>
+            </plugin>
+
         </plugins>
         <!-- exclude building java files -->
         <testResources>

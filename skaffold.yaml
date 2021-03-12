@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+metadata:
+  name: trip
+build:
+  artifacts:
+    - image: gcr.io/trip-307115/trip
+      context: .
+      jib: { }
+deploy:
+  kubectl:
+    manifests:
+      - src/main/resources/deployment.yaml
+      - src/main/resources/service.yaml

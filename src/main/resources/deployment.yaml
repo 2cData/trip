@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trip-service
+spec:
+  selector:
+    matchLabels:
+      app: trip-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: trip-service
+    spec:
+      containers:
+        - name: trip-service
+          image: gcr.io/trip-307115/trip
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            initialDelaySeconds: 20
+            httpGet:
+              port: 8080
+              path: /actuator/health
+          readinessProbe:
+            initialDelaySeconds: 30
+            httpGet:
+              port: 8080
+              path: /actuator/health

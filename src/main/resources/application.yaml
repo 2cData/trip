@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: trip-service
+
+management:
+  endpoint:
+    health:
+      enabled: true
