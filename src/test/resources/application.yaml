@@ -1,7 +1,4 @@
 spring:
-  application:
-    name: trip-service
-
   datasource:
     url: jdbc:h2:mem:tripdb
     username: sa
@@ -17,7 +14,3 @@ spring:
       ddl-auto: update
       dialect: org.hibernate.dialect.H2Dialect
 
-management:
-  endpoint:
-    health:
-      enabled: true
