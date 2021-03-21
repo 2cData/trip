@@ -258,6 +258,15 @@
             </plugin>
 
         </plugins>
+
+        <!-- used for Profiles (https://www.baeldung.com/spring-profiles) -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <!-- exclude building java files -->
         <testResources>
             <testResource>
@@ -268,5 +277,23 @@
             </testResource>
         </testResources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

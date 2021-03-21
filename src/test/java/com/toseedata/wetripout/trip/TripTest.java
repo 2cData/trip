@@ -1,7 +1,6 @@
 package com.toseedata.wetripout.trip;
 
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -16,8 +15,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
-@Slf4j
 public class TripTest {
     private final String userNameVal = "test@test.com";
     private final String nameVal = "This is a test trip";
@@ -65,7 +62,7 @@ public class TripTest {
 
         //then
         assertEquals(1, violations.size());
-        assertEquals(properties.getProperty("NotNull.trip.username"), violations.iterator().next().getMessage());
+        assertEquals(properties.getProperty("NotNull.trip.userName"), violations.iterator().next().getMessage());
     }
 
     @Test
@@ -78,7 +75,7 @@ public class TripTest {
 
         //then
         assertEquals(1, violations.size());
-        assertEquals(properties.getProperty("Email.trip.username"), violations.iterator().next().getMessage());
+        assertEquals(properties.getProperty("Email.trip.userName"), violations.iterator().next().getMessage());
     }
 
     @Test
@@ -91,7 +88,7 @@ public class TripTest {
 
         //then
         assertEquals(1, violations.size());
-        assertEquals(properties.getProperty("Email.trip.username"), violations.iterator().next().getMessage());
+        assertEquals(properties.getProperty("Email.trip.userName"), violations.iterator().next().getMessage());
     }
 
     @Test

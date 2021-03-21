@@ -6,12 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,25 +21,35 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class Trip {
 
+    @javax.persistence.Id
+    @GeneratedValue
     @Id
-    @Column(nullable = false, updatable = false)
+    @Column(name = "ID", nullable = false, updatable = false)
     private UUID id;
-    @NotNull(message = "{NotNull.trip.username}")
-    @Email(message = "{Email.trip.username}")
-    @Column()
+
+    @NotNull(message = "{NotNull.trip.userName}")
+    @Email(message = "{Email.trip.userName}")
+    @Unique
+    @Column(name = "USERNAME", nullable = false, updatable = false)
     private String userName;
+
     @NotNull(message = "{NotNull.trip.name}")
     @Size(min = 5, max = 100, message = "{Size.trip.name}")
     @EscapeCharacterConstraint
-    @Column()
+    @Column(name = "NAME", nullable = false)
     private String name;
+
     @EscapeCharacterConstraint
+    @Column(name = "DESCRIPTION")
     private String description;
-    @Column(nullable = false, updatable = false)
+
+    @Column(name = "CREATED", nullable = false, updatable = false)
     private OffsetDateTime dateCreated;
-    @Column(nullable = false)
+
+    @Column(name = "UPDATED", nullable = false)
     private OffsetDateTime lastUpdated;
 
     public Trip(final String userName, final String name) {
@@ -62,6 +70,5 @@ public class Trip {
     public void preUpdate() {
         this.lastUpdated = OffsetDateTime.now();
     }
-
 
 }
