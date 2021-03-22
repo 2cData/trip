@@ -1,19 +1,19 @@
 package com.toseedata.wetripout.trip;
 
 
+import com.toseedata.wetripout.trip.utils.Auditable;
 import com.toseedata.wetripout.trip.utils.EscapeCharacterConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.checkerframework.common.aliasing.qual.Unique;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -21,15 +21,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class Trip {
+@Table(name = "TRIP", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@EntityListeners(AuditingEntityListener.class)
+public class Trip extends Auditable<String> {
 
     @javax.persistence.Id
     @GeneratedValue
-    @Id
+    //@Id
     @Column(name = "ID", nullable = false, updatable = false)
     private UUID id;
 
+    //TODO the username is not unique AT THE TRIP LEVEL
+    // Tomorrow, make the user object
     @NotNull(message = "{NotNull.trip.userName}")
     @Email(message = "{Email.trip.userName}")
     @Unique
@@ -46,29 +49,10 @@ public class Trip {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "CREATED", nullable = false, updatable = false)
-    private OffsetDateTime dateCreated;
-
-    @Column(name = "UPDATED", nullable = false)
-    private OffsetDateTime lastUpdated;
-
     public Trip(final String userName, final String name) {
         this.id = UUID.randomUUID();
         this.userName = userName;
         this.name = name;
-        this.dateCreated = OffsetDateTime.now();
-        this.lastUpdated = this.dateCreated;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.dateCreated = OffsetDateTime.now();
-        this.lastUpdated = this.dateCreated;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.lastUpdated = OffsetDateTime.now();
     }
 
 }
