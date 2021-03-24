@@ -1,20 +1,20 @@
 package com.toseedata.wetripout.trip;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Value;
 
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-public class TripDto {
+@Value
+public final class TripDto {
     @NonNull
-    private UUID id;
+    UUID id;
 
     @NonNull
-    private String userName;
+    String userName;
 
     @NonNull
-    private String name;
+    String name;
+
+    String description;
 }

@@ -3,11 +3,7 @@ package com.toseedata.wetripout.trip;
 
 import com.toseedata.wetripout.trip.utils.Auditable;
 import com.toseedata.wetripout.trip.utils.EscapeCharacterConstraint;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.checkerframework.common.aliasing.qual.Unique;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -21,7 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "TRIP", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+//@Table(name = "TRIP", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "TRIP")
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Trip extends Auditable<String> {
 
@@ -32,10 +30,11 @@ public class Trip extends Auditable<String> {
     private UUID id;
 
     //TODO the username is not unique AT THE TRIP LEVEL
+    //TODO make a test for updating
     // Tomorrow, make the user object
+    //@Unique
     @NotNull(message = "{NotNull.trip.userName}")
     @Email(message = "{Email.trip.userName}")
-    @Unique
     @Column(name = "USERNAME", nullable = false, updatable = false)
     private String userName;
 

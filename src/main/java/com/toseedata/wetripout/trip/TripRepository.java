@@ -10,5 +10,5 @@ import java.util.UUID;
 interface TripRepository extends JpaRepository<Trip, UUID> {
     List<Trip> findTripsByName(final String name);
 
-    Trip findTripByUserName(final String userName);
+    List<Trip> findTripsByUserName(final String userName);
 }

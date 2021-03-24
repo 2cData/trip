@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.dao.DataIntegrityViolationException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,13 +103,15 @@ public class TripRepositoryTest {
 
         //when
         entityManager.persist(trip);
-        Trip result = repository.findTripByUserName(trip.getUserName());
+        List<Trip> results = repository.findTripsByUserName(trip.getUserName());
 
         // then
-        assertEquals(result.getUserName(), trip.getUserName());
+        assertEquals(results.get(0).getUserName(), trip.getUserName());
         assertEquals(repository.count(), 1);
     }
 
+    //TODO not using ths test here, but it is a good example of how to test unique
+/*
     @Test()
     public void whenAddDuplicateUsername_thenThrowError() {
         //given
@@ -119,7 +122,7 @@ public class TripRepositoryTest {
         repository.save(trip1);
 
         //then
-        repository.findTripByUserName(trip1.getUserName());
+        repository.findTripsByUserName(trip1.getUserName());
         assertEquals(repository.count(), 1);
 
         assertThrows(DataIntegrityViolationException.class, () -> {
@@ -127,7 +130,7 @@ public class TripRepositoryTest {
             repository.flush();
         });
     }
-
+*/
     @Test
     public void whenAddNewRecord_thenCreatedAndUpdatedDatesAreSame() {
         //given
@@ -181,7 +184,76 @@ public class TripRepositoryTest {
 
         //this shows 1 minute difference
         //TODO this is not working, but could be an H2 artifact
-        //assertEquals(createdDateBefore,createdDateAfter);
+        //assertNotEquals(createdDateBefore,createdDateAfter);
     }
 
+    @Test
+    public void whenAddInvalidUserName_thenFail() {
+        //given
+        Trip trip = Trip.builder().userName("invalid").name("seedABC").build();
+
+        //when
+        entityManager.persist(trip);
+
+        //then
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.flush();
+        });
+    }
+
+    @Test
+    public void whenAddNullUserName_thenFail() {
+        //given
+        Trip trip = Trip.builder().userName(null).name("seedABC").build();
+
+        //when
+        entityManager.persist(trip);
+
+        //then
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.flush();
+        });
+    }
+
+    @Test
+    public void whenAddEmptyUserName_thenFail() {
+        //given
+        Trip trip = Trip.builder().userName(null).name("   ").build();
+
+        //when
+        entityManager.persist(trip);
+
+        //then
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.flush();
+        });
+    }
+
+    @Test
+    public void whenAddNullName_thenFail() {
+        //given
+        Trip trip = Trip.builder().userName("user@test.com").name(null).build();
+
+        //when
+        entityManager.persist(trip);
+
+        //then
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.flush();
+        });
+    }
+
+    @Test
+    public void whenAddEmptyName_thenFail() {
+        //given
+        Trip trip = Trip.builder().userName("user@test.com").name("   ").build();
+
+        //when
+        entityManager.persist(trip);
+
+        //then
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.flush();
+        });
+    }
 }

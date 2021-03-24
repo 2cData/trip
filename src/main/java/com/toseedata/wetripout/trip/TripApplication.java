@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import java.util.Optional;
 
@@ -23,5 +24,11 @@ public class TripApplication {
         SecurityContextHolder.getContext.getAuthentication().getName()
          */
         return () -> Optional.ofNullable("test_user");
+    }
+
+
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
 }
